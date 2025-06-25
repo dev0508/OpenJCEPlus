@@ -98,7 +98,7 @@ abstract class DSASignature extends SignatureSpi {
             return this.signature.verify(sigBytes);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            if (e.getMessage().equals("nested asn1 error")) {
+            if (e.getMessage().equals("nested asn1 error") || e.getMessage().equals("ICC_EVP_VerifyFinal failed")) {
                 throw new SignatureException(e);
             }
             // return false rather than throwing exception
