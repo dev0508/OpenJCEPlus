@@ -97,6 +97,7 @@ abstract class DSASignature extends SignatureSpi {
         try {
             return this.signature.verify(sigBytes);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             if (e.getMessage().equals("nested asn1 error")) {
                 throw new SignatureException(e);
             }

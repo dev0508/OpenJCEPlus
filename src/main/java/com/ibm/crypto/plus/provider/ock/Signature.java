@@ -107,9 +107,7 @@ public final class Signature {
             verified = NativeInterface.SIGNATURE_verify(this.ockContext.getId(), digest.getId(),
                     this.key.getPKeyId(), sigBytes);
         } catch(OCKException e) {
-            if("nested asn1 error".equals(e.getMessage())) {
-                throw new SignatureException();
-            }
+            System.out.println(e.getMessage());
         } finally {
             // Try to reset even if OCKException is thrown
             this.digest.reset();
