@@ -9,6 +9,7 @@
 package com.ibm.crypto.plus.provider.ock;
 
 import java.security.InvalidKeyException;
+import java.security.SignatureException;
 
 public final class Signature {
 
@@ -85,7 +86,7 @@ public final class Signature {
         return signature;
     }
 
-    public synchronized boolean verify(byte[] sigBytes) throws OCKException {
+    public synchronized boolean verify(byte[] sigBytes) throws OCKException, SignatureException {
         //final String methodName = "verify";
         // create key length function and check sigbytes against key length?
         if (!this.initialized) {
@@ -105,6 +106,10 @@ public final class Signature {
         try {
             verified = NativeInterface.SIGNATURE_verify(this.ockContext.getId(), digest.getId(),
                     this.key.getPKeyId(), sigBytes);
+        } catch(OCKException e) {
+            if("nested asn1 error".equals(e.getMessage())) {
+                throw new SignatureException();
+            }
         } finally {
             // Try to reset even if OCKException is thrown
             this.digest.reset();
