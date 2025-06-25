@@ -244,9 +244,9 @@ Java_com_ibm_crypto_plus_provider_ock_NativeInterface_SIGNATURE_1verify(
             }
 #endif
             errCode = ICC_ERR_peek_last_error(ockCtx);
-            if (debug) {
-                gslogMessage("errCode: %X", errCode);
-            }
+            // if (debug) {
+            gslogMessage("errCode: %X", errCode);
+            // }
             if (errCode == 0x0D08303A) {
                 throwOCKException(env, 0, "nested asn1 error");
             } else {
