@@ -739,13 +739,14 @@ public final class OpenJCEPlus extends OpenJCEPlusProvider {
          * SecureRandom
          * =======================================================================
          */
+        attrs.put("ThreadSafe", "true");
         aliases = new String[] {"HASHDRBG", "SHA2DRBG"};
         putService(new OpenJCEPlusService(jce, "SecureRandom", "SHA256DRBG",
-                "com.ibm.crypto.plus.provider.HASHDRBG$SHA256DRBG", aliases));
+                "com.ibm.crypto.plus.provider.HASHDRBG$SHA256DRBG", aliases, attrs));
 
         aliases = new String[] {"SHA5DRBG"};
         putService(new OpenJCEPlusService(jce, "SecureRandom", "SHA512DRBG",
-                "com.ibm.crypto.plus.provider.HASHDRBG$SHA512DRBG", aliases));
+                "com.ibm.crypto.plus.provider.HASHDRBG$SHA512DRBG", aliases, attrs));
 
         /* =======================================================================
          * Signature engines
