@@ -239,7 +239,7 @@ abstract class XDHKeyAgreement extends KeyAgreementSpi {
 
         if (!(key instanceof XDHPrivateKeyImpl)) {
             try {
-                KeyFactory kf = KeyFactory.getInstance(this.alg);
+                KeyFactory kf = KeyFactory.getInstance(this.alg, this.provider);
                 XECPrivateKeySpec spec = kf.getKeySpec(key, XECPrivateKeySpec.class);
                 key = kf.generatePrivate(spec);
             } catch (Exception exception) {
