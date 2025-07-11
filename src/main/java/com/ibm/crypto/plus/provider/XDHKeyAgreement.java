@@ -21,6 +21,8 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.NamedParameterSpec;
 import java.security.spec.XECPrivateKeySpec;
+import java.security.spec.XECPublicKeySpec;
+
 import javax.crypto.KeyAgreementSpi;
 import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
@@ -73,8 +75,16 @@ abstract class XDHKeyAgreement extends KeyAgreementSpi {
     @Override
     protected Key engineDoPhase(Key key, boolean lastPhase)
             throws InvalidKeyException, IllegalStateException {
-        if (!(key instanceof XDHPublicKeyImpl))
-            throw new InvalidKeyException("Key is not an XDHPublicKeyImpl");
+        if (!(key instanceof XDHPublicKeyImpl)) {
+            try {
+                KeyFactory kf = KeyFactory.getInstance(this.alg, this.provider);
+                XECPublicKeySpec spec = kf.getKeySpec(key, XECPublicKeySpec.class);
+                key = kf.generatePublic(spec);
+            } catch (Exception exception) {
+                // should not happen
+                throw new InvalidKeyException("KeyFactory is not working as expected");
+            }
+        }
         if (ockXecKeyPriv == null)
             throw new IllegalStateException(
                     "object is not initialized correctly (private key is not received)");
